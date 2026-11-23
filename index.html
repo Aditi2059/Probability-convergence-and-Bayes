@@ -1,0 +1,288 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Probability & Inference · Aditi Maharjan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-mark">📊</span>
+      <div class="brand-text">
+        <h1>Probability & Inference</h1>
+        <p class="brand-tagline">A friendly walk through convergence &amp; Bayesian thinking</p>
+      </div>
+    </div>
+    <div class="author-card">
+      <p class="author-name">Aditi Maharjan</p>
+      <p class="author-meta">Matricola 2287561</p>
+      <p class="author-meta"><a href="mailto:aditi.maharjan67@gmail.com">aditi.maharjan67@gmail.com</a></p>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- INTRO -->
+  <section class="card intro-card">
+    <h2 class="section-title">👋 Let's make sense of it together</h2>
+    <p class="lead">
+      Probability theory can feel abstract — all those limits, theorems and Greek letters.
+      But underneath, it's asking very human questions: <em>Will the average settle down?
+      How sure can we be? And how should we update what we believe when new data arrives?</em>
+    </p>
+    <p>
+      This page walks through four ways random quantities can "converge", why the mysterious
+      <span class="inline-formula">√n</span> keeps showing up, and how Bayes' theorem turns
+      prior beliefs into sharper conclusions. There are two small interactive playgrounds
+      so you can <strong>see</strong> the ideas move, not just read about them.
+    </p>
+  </section>
+
+  <!-- MODES OF CONVERGENCE -->
+  <section class="card">
+    <h2 class="section-title">1 · Four ways a sequence can "settle down"</h2>
+    <p>
+      Imagine repeatedly flipping a weighted coin, or averaging more and more measurements.
+      In what sense does the running answer approach the truth? Probability theory gives us
+      four different — and increasingly strict or loose — answers.
+    </p>
+
+    <div class="modes-grid">
+      <article class="mode-card">
+        <h4>Convergence in probability <span class="badge">LLN</span></h4>
+        <p class="mode-def"><strong>In plain words:</strong> the chance of being far from the limit shrinks to zero.</p>
+        <p class="mode-math">\(X_n \xrightarrow{p} X\) if \(P(|X_n-X|\ge\epsilon)\to 0\) for every \(\epsilon>0\).</p>
+        <p class="mode-role">This is the workhorse behind the <strong>Weak Law of Large Numbers</strong>: sample averages get close to the true mean.</p>
+      </article>
+
+      <article class="mode-card">
+        <h4>Almost sure convergence <span class="badge">LLN</span></h4>
+        <p class="mode-def"><strong>In plain words:</strong> the sequence settles down on <em>every</em> run, except possibly on a set of probability zero.</p>
+        <p class="mode-math">\(X_n \xrightarrow{a.s.} X\) if \(P(\lim_{n\to\infty}X_n=X)=1\).</p>
+        <p class="mode-role">This gives the <strong>Strong Law of Large Numbers</strong> — a stronger guarantee than the weak version.</p>
+      </article>
+
+      <article class="mode-card">
+        <h4>Mean-square (L²) convergence</h4>
+        <p class="mode-def"><strong>In plain words:</strong> the average squared error goes to zero.</p>
+        <p class="mode-math">\(X_n \xrightarrow{L^2} X\) if \(E[(X_n-X)^2]\to 0\).</p>
+        <p class="mode-role">Popular in statistics because it's tied to <strong>mean squared error</strong> and makes proofs (like the CLT) easier.</p>
+      </article>
+
+      <article class="mode-card">
+        <h4>Convergence in distribution <span class="badge clt">CLT</span></h4>
+        <p class="mode-def"><strong>In plain words:</strong> the <em>shape</em> of the distribution gets closer and closer, even if individual values don't settle.</p>
+        <p class="mode-math">\(X_n \xrightarrow{d} X\) if the CDFs converge at continuity points.</p>
+        <p class="mode-role">This is exactly what the <strong>Central Limit Theorem</strong> delivers — the famous bell curve.</p>
+      </article>
+    </div>
+
+    <div class="note">
+      <strong>How they relate:</strong> L² convergence → convergence in probability → convergence in distribution.
+      Almost sure convergence also implies convergence in probability. The arrows only go one way —
+      none of the reverse implications hold in general.
+    </div>
+  </section>
+
+  <!-- WHY √n -->
+  <section class="card">
+    <h2 class="section-title">2 · Why does √n keep appearing?</h2>
+    <p>
+      This is one of those questions that unlocks a lot. Suppose you take <em>n</em> independent
+      measurements with mean μ and variance σ². The sample average is
+      \(\bar{X}_n = \tfrac{1}{n}\sum X_i\). Its variance shrinks like σ²/n.
+    </p>
+    <p>
+      If we just looked at \(\bar{X}_n - \mu\), it would collapse to 0 — not very informative.
+      Multiplying by <span class="inline-formula">√n</span> cancels the shrinking variance and
+      gives us something that <strong>stays put</strong>:
+    </p>
+    <div class="formula">\(\sqrt{n}\,(\bar{X}_n - \mu) \;\xrightarrow{d}\; N(0,\sigma^2)\)</div>
+    <p>
+      That's the Central Limit Theorem. The √n is not magic — it's exactly the scale factor needed
+      to offset the \(1/n\) variance reduction, made possible by <strong>independence</strong>
+      (which makes variances add). You'll see the same √n in standard errors, confidence intervals,
+      and test statistics for the same reason.
+    </p>
+
+    <!-- Interactive demo: LLN + CLT flavor -->
+    <div class="interactive-panel">
+      <div class="panel-head">
+        <h3>📈 Try it: watch √n keep things stable</h3>
+        <button id="resampleBtn" class="secondary">🔄 New sample</button>
+      </div>
+      <div class="sim-row">
+        <div class="sim-label">
+          <span>Sample size n = <span id="nValue">30</span></span>
+          <input type="range" id="nSlider" min="5" max="200" value="30" step="1" aria-label="Sample size">
+        </div>
+        <div class="sim-stats">
+          <div class="stat-item"><span>Sample mean</span> <span class="stat-value" id="meanDisplay">–</span></div>
+          <div class="stat-item"><span>√n(mean−μ)/σ</span> <span class="stat-value" id="zDisplay">–</span></div>
+        </div>
+      </div>
+      <p class="footnote">
+        Data drawn from a standard normal (μ = 0, σ = 1). Slide n and notice how the sample mean
+        drifts near 0, while the scaled value stays roughly the same size — the CLT at work.
+      </p>
+    </div>
+  </section>
+
+  <!-- BAYES -->
+  <section class="card">
+    <h2 class="section-title">3 · Conditional probability, Bayes & updating beliefs</h2>
+    <p>
+      Conditional probability is the simple but powerful idea of asking "what's the chance of A,
+      given that we already know B?" — written \(P(A|B)\). Rearranging it leads straight to
+      <strong>Bayes' theorem</strong>:
+    </p>
+    <div class="formula">\(p(\theta \mid x) = \dfrac{p(x \mid \theta)\,p(\theta)}{p(x)}\)</div>
+    <p>
+      In Bayesian inference we treat the unknown parameter θ as something we have beliefs about.
+      We start with a <strong>prior</strong>, see some <strong>data</strong> (the likelihood),
+      and arrive at a <strong>posterior</strong> — our updated belief.
+    </p>
+
+    <div class="bayes-flow">
+      <div class="flow-item"><span class="label">Prior<br><small>what we believed</small></span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item"><span class="label">Likelihood<br><small>what data say</small></span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item"><span class="label">Posterior<br><small>updated belief</small></span></div>
+    </div>
+
+    <p>
+      The magic is in the <em>updating</em>: the posterior today can become the prior tomorrow.
+      As more data arrive, the likelihood usually starts to dominate — the posterior tightens
+      around the true value. That's the Bayesian story of learning from experience.
+    </p>
+
+    <h3>Two everyday examples</h3>
+    <div class="examples">
+      <div class="example-box">
+        <h5>🧪 Beta–Binomial (e.g., estimating a success rate)</h5>
+        <p><strong>Prior:</strong> θ ~ Beta(α, β) — a gentle belief about the rate, like Beta(2,2).</p>
+        <p><strong>Likelihood:</strong> x successes in n trials → Binomial(n, θ).</p>
+        <p><strong>Posterior:</strong> θ | x ~ Beta(α + x, β + n − x).</p>
+        <p><span class="insight">The prior shrinks the estimate; with plenty of data, the likelihood wins.</span></p>
+      </div>
+      <div class="example-box">
+        <h5>📊 Normal mean with known variance</h5>
+        <p><strong>Prior:</strong> μ ~ N(μ₀, τ²).</p>
+        <p><strong>Likelihood:</strong> xᵢ ~ N(μ, σ²) independently.</p>
+        <p><strong>Posterior:</strong> a Normal that blends prior precision and data precision.</p>
+        <p><span class="insight">When data are scarce, the prior mean pulls the answer; when they're plentiful, the data take over.</span></p>
+      </div>
+    </div>
+
+    <div class="pros-cons">
+      <div class="pros">
+        <h4>✅ Why people love it</h4>
+        <ul>
+          <li>Gives a full distribution, not just a point estimate — uncertainty is built in.</li>
+          <li>Can incorporate expert knowledge through the prior.</li>
+          <li>Updates naturally and coherently as data arrive.</li>
+        </ul>
+      </div>
+      <div class="cons">
+        <h4>⚠️ What to watch out for</h4>
+        <ul>
+          <li>The prior can be subjective — and a badly chosen one can bias the result.</li>
+          <li>Complex models need heavy computation (MCMC and friends).</li>
+          <li>With lots of data, the likelihood usually dominates — but not always.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Bottom line:</strong> a strong (confident) prior pulls the posterior toward itself;
+      a weak (diffuse) prior lets the data speak. Where the balance lands is exactly what makes
+      the prior–likelihood conversation so important in inference.
+    </div>
+  </section>
+
+  <!-- INTERACTIVE BAYES -->
+  <section class="card">
+    <h2 class="section-title">4 · Play with Bayes: watch the posterior move</h2>
+    <p>
+      Change the prior (α, β) and the observed data below. The posterior Beta distribution
+      updates live — a little hands-on intuition for the update rule.
+    </p>
+
+    <div class="bayes-interactive">
+      <div class="controls">
+        <label class="sim-label" for="alphaSlider">Prior α <span id="alphaVal">2</span></label>
+        <input type="range" id="alphaSlider" min="1" max="10" value="2" step="0.5">
+
+        <label class="sim-label" for="betaSlider">Prior β <span id="betaVal">2</span></label>
+        <input type="range" id="betaSlider" min="1" max="10" value="2" step="0.5">
+
+        <label class="sim-label" for="succSlider">Successes <span id="succVal">7</span></label>
+        <input type="range" id="succSlider" min="0" max="20" value="7" step="1">
+
+        <label class="sim-label" for="failSlider">Failures <span id="failVal">3</span></label>
+        <input type="range" id="failSlider" min="0" max="20" value="3" step="1">
+
+        <button id="resetBayes" class="secondary">Reset</button>
+      </div>
+
+      <div class="posterior-card">
+        <p class="posterior-title">Posterior: Beta(α + successes, β + failures)</p>
+        <p class="posterior-value" id="posteriorDisplay">Beta(9, 5)</p>
+        <div class="posterior-stats">
+          <div><span>Posterior mean</span> <strong id="postMean">0.64</strong></div>
+          <div><span>95% credible interval</span> <strong id="postCI">[0.41, 0.83]</strong></div>
+        </div>
+        <p class="footnote">Credible interval shown via a simple normal approximation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUMMARY -->
+  <section class="card summary-card">
+    <h2 class="section-title">🔍 In one breath</h2>
+    <p>
+      The LLN lives in convergence in probability (and almost surely); the CLT lives in convergence
+      in distribution. The √n factor is the bridge that keeps the scaled sample average stable —
+      a direct consequence of independence and variance additivity. And Bayesian inference gives us
+      a principled way to combine prior belief with data, always updating toward a sharper posterior.
+      Together, these are the quiet engines behind most of statistical reasoning.
+    </p>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <p class="footer-name">Aditi Maharjan</p>
+      <p class="footer-meta">Matricola 2287561</p>
+    </div>
+    <div class="footer-right">
+      <a href="mailto:aditi.maharjan67@gmail.com">aditi.maharjan67@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+<!-- MathJax config -->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+<script src="script.js"></script>
+</body>
+</html>
